@@ -1,18 +1,69 @@
 from collections.abc import Generator
+from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 from app.core.config import settings
 
-# SQLite requiere check_same_thread=False para uso con FastAPI
-connect_args = {"check_same_thread": False} if settings.DATABASE_URL.startswith("sqlite") else {}
 
-engine = create_engine(
-    settings.DATABASE_URL,
-    connect_args=connect_args,
-    pool_pre_ping=True,
-)
+def normalize_database_url(url: str) -> str:
+    """
+    Normaliza URLs de Postgres (Render usa a menudo postgres://).
+    Fuerza el driver psycopg2: postgresql+psycopg2://...
+    """
+    if url.startswith("postgres://"):
+        url = "postgresql+psycopg2://" + url[len("postgres://") :]
+    elif url.startswith("postgresql://"):
+        url = "postgresql+psycopg2://" + url[len("postgresql://") :]
+    return url
+
+
+def ensure_postgres_ssl(url: str) -> str:
+    """Agrega sslmode=require en Postgres remoto si no está definido (p. ej. Render)."""
+    if not url.startswith("postgresql"):
+        return url
+
+    parsed = urlparse(url)
+    host = (parsed.hostname or "").lower()
+    if host in {"localhost", "127.0.0.1", "::1"}:
+        return url
+
+    query = parse_qs(parsed.query, keep_blank_values=True)
+    if "sslmode" not in query:
+        query["sslmode"] = ["require"]
+        parsed = parsed._replace(query=urlencode(query, doseq=True))
+        return urlunparse(parsed)
+    return url
+
+
+def build_engine_kwargs(database_url: str) -> dict:
+    """Argumentos de create_engine según el motor (SQLite vs PostgreSQL)."""
+    is_sqlite = database_url.startswith("sqlite")
+    is_postgres = database_url.startswith("postgresql")
+
+    kwargs: dict = {
+        "pool_pre_ping": True,
+    }
+
+    if is_sqlite:
+        kwargs["connect_args"] = {"check_same_thread": False}
+    elif is_postgres:
+        # Pool adecuado para web services en Render / producción
+        kwargs.update(
+            {
+                "pool_size": 5,
+                "max_overflow": 10,
+                "pool_recycle": 1800,
+            }
+        )
+
+    return kwargs
+
+
+DATABASE_URL = ensure_postgres_ssl(normalize_database_url(settings.DATABASE_URL))
+
+engine = create_engine(DATABASE_URL, **build_engine_kwargs(DATABASE_URL))
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

@@ -1,0 +1,36 @@
+# Blueprint Render para la API TORQUE (PostgreSQL + Web Service).
+# Despliega desde la carpeta e-commerce-fastapi/ o ajusta rootDir si usas monorepo.
+services:
+  - type: web
+    name: torque-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: bash start.sh
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.0"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: torque-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "60"
+      - key: PROJECT_NAME
+        value: E-Commerce API
+      - key: API_V1_PREFIX
+        value: /api/v1
+      # Orígenes CORS del frontend (Vite local + dominio de producción)
+      - key: CORS_ORIGINS
+        sync: false
+
+databases:
+  - name: torque-db
+    plan: free
+    databaseName: torque
+    user: torque
