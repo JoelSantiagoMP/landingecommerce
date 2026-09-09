@@ -1,12 +1,11 @@
-# Blueprint Render para la API TORQUE (PostgreSQL + Web Service).
-# Si despliegas el monorepo desde la raíz, usa el render.yaml del root
-# (con rootDir: e-commerce-fastapi) o en el Dashboard define:
-#   Root Directory = e-commerce-fastapi
+# Blueprint en la raíz del monorepo.
+# El código de la API vive en e-commerce-fastapi/
 services:
   - type: web
     name: torque-api
     runtime: python
     plan: free
+    rootDir: e-commerce-fastapi
     buildCommand: pip install -r requirements.txt
     startCommand: bash start.sh
     healthCheckPath: /health
@@ -27,7 +26,6 @@ services:
         value: E-Commerce API
       - key: API_V1_PREFIX
         value: /api/v1
-      # Orígenes CORS del frontend (Vite local + dominio de producción)
       - key: CORS_ORIGINS
         sync: false
 
