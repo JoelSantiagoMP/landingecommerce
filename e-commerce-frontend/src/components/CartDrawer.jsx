@@ -16,21 +16,23 @@ export default function CartDrawer() {
     <div className="fixed inset-0 z-50 flex justify-end">
       <button
         type="button"
-        className="absolute inset-0 bg-slate-900/45 backdrop-blur-[2px]"
+        className="absolute inset-0 bg-black/70 backdrop-blur-[2px] animate-fadeIn"
         aria-label="Cerrar carrito"
         onClick={closeCart}
       />
 
-      <aside className="relative flex h-full w-full max-w-md flex-col bg-white shadow-panel animate-[slideIn_0.25s_ease-out]">
-        <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+      <aside className="relative flex h-full w-full max-w-md flex-col border-l border-surface-border bg-surface-raised shadow-panel animate-slideIn">
+        <div className="flex items-center justify-between border-b border-surface-border px-5 py-4">
           <div>
-            <p className="font-display text-2xl font-bold tracking-wide">Tu carrito</p>
+            <p className="font-display text-2xl font-bold italic tracking-wide text-white">
+              Tu carrito
+            </p>
             <p className="text-sm text-ink-soft">{items.length} referencia(s)</p>
           </div>
           <button
             type="button"
             onClick={closeCart}
-            className="inline-flex h-9 w-9 items-center justify-center border border-slate-200 text-ink-soft hover:text-ink"
+            className="inline-flex h-9 w-9 items-center justify-center border border-surface-border text-ink-soft transition hover:border-primary hover:text-white"
             aria-label="Cerrar"
           >
             <X className="h-4 w-4" />
@@ -50,7 +52,7 @@ export default function CartDrawer() {
                 return (
                   <li
                     key={item.id}
-                    className="flex gap-3 border-b border-slate-100 pb-4 last:border-0"
+                    className="flex gap-3 border-b border-surface-border pb-4 last:border-0"
                   >
                     <div className="h-20 w-20 shrink-0 overflow-hidden bg-surface-muted">
                       {item.imagen_url ? (
@@ -60,7 +62,7 @@ export default function CartDrawer() {
                           className="h-full w-full object-cover"
                         />
                       ) : (
-                        <div className="flex h-full items-center justify-center text-[10px] text-slate-400">
+                        <div className="flex h-full items-center justify-center text-[10px] text-ink-soft">
                           N/A
                         </div>
                       )}
@@ -68,18 +70,18 @@ export default function CartDrawer() {
 
                     <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between gap-2">
-                        <h4 className="truncate font-semibold text-ink">{item.nombre}</h4>
+                        <h4 className="truncate font-semibold text-white">{item.nombre}</h4>
                         <button
                           type="button"
                           onClick={() => removeItem(item.id)}
-                          className="text-slate-400 transition hover:text-red-600"
+                          className="text-ink-soft transition hover:text-primary"
                           aria-label={`Quitar ${item.nombre}`}
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
 
-                      <p className="mt-0.5 text-sm text-primary font-semibold">
+                      <p className="mt-0.5 text-sm font-semibold text-primary">
                         {formatMoney(unit)}
                       </p>
 
@@ -87,23 +89,23 @@ export default function CartDrawer() {
                         <button
                           type="button"
                           onClick={() => updateQty(item.id, item.quantity - 1)}
-                          className="inline-flex h-8 w-8 items-center justify-center border border-slate-200"
+                          className="inline-flex h-8 w-8 items-center justify-center border border-surface-border text-white"
                           aria-label="Disminuir cantidad"
                         >
                           <Minus className="h-3.5 w-3.5" />
                         </button>
-                        <span className="min-w-8 text-center text-sm font-semibold">
+                        <span className="min-w-8 text-center text-sm font-semibold text-white">
                           {item.quantity}
                         </span>
                         <button
                           type="button"
                           onClick={() => updateQty(item.id, item.quantity + 1)}
-                          className="inline-flex h-8 w-8 items-center justify-center border border-slate-200"
+                          className="inline-flex h-8 w-8 items-center justify-center border border-surface-border text-white"
                           aria-label="Aumentar cantidad"
                         >
                           <Plus className="h-3.5 w-3.5" />
                         </button>
-                        <span className="ml-auto text-sm font-bold">
+                        <span className="ml-auto text-sm font-bold text-white">
                           {formatMoney(unit * item.quantity)}
                         </span>
                       </div>
@@ -115,10 +117,10 @@ export default function CartDrawer() {
           )}
         </div>
 
-        <div className="border-t border-slate-200 bg-surface px-5 py-4">
+        <div className="border-t border-surface-border bg-surface px-5 py-4">
           <div className="mb-3 flex items-center justify-between">
             <span className="text-sm font-medium text-ink-soft">Total</span>
-            <span className="font-display text-3xl font-extrabold text-ink">
+            <span className="font-display text-3xl font-extrabold text-white">
               {formatMoney(total)}
             </span>
           </div>
@@ -126,19 +128,12 @@ export default function CartDrawer() {
             type="button"
             disabled={items.length === 0}
             onClick={openCheckout}
-            className="w-full bg-primary py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:bg-slate-300"
+            className="w-full bg-primary py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:bg-surface-border disabled:text-ink-soft"
           >
             Ir al checkout
           </button>
         </div>
       </aside>
-
-      <style>{`
-        @keyframes slideIn {
-          from { transform: translateX(100%); }
-          to { transform: translateX(0); }
-        }
-      `}</style>
     </div>
   )
 }

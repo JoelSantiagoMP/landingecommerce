@@ -7,9 +7,11 @@ Uso (desde e-commerce-fastapi/):
 
 from __future__ import annotations
 
+from typing import Optional
+
 from sqlalchemy.orm import Session
 
-from app.core.database import Base, SessionLocal, engine
+from app.core.database import Base, SessionLocal, engine, ensure_producto_ficha_columns
 from app.core.security import get_password_hash
 from app.models import Categoria, Orden, OrdenItem, Producto, Usuario  # noqa: F401
 
@@ -41,6 +43,11 @@ PRODUCTOS = [
         "precio_venta": 65_000,
         "categoria_slug": "encendido-y-bobinas",
         "imagen_url": IMG_COIL,
+        "marca_fabricante": "Beru",
+        "origen": "Alemania",
+        "material": "Resina epoxi / plástico técnico",
+        "contenido_caja": "1 unidad",
+        "compatibilidad": "VW Golf III/IV, Polo, Seat Ibiza, Córdoba",
     },
     {
         "nombre": "Bobina Hyundai i10 28010",
@@ -48,6 +55,11 @@ PRODUCTOS = [
         "precio_venta": 62_000,
         "categoria_slug": "encendido-y-bobinas",
         "imagen_url": IMG_ENGINE,
+        "marca_fabricante": "Hyundai",
+        "origen": "Corea del Sur",
+        "material": "Plástico reforzado / cobre",
+        "contenido_caja": "1 unidad",
+        "compatibilidad": "Hyundai i10 (ref. 28010)",
     },
     {
         "nombre": "Bobina Hyundai i25 New",
@@ -55,6 +67,11 @@ PRODUCTOS = [
         "precio_venta": 62_000,
         "categoria_slug": "encendido-y-bobinas",
         "imagen_url": IMG_ENGINE,
+        "marca_fabricante": "Hyundai",
+        "origen": "Corea del Sur",
+        "material": "Plástico reforzado / cobre",
+        "contenido_caja": "1 unidad",
+        "compatibilidad": "Hyundai i25 New",
     },
     {
         "nombre": "Bobina Kia Picanto",
@@ -62,6 +79,11 @@ PRODUCTOS = [
         "precio_venta": 62_000,
         "categoria_slug": "encendido-y-bobinas",
         "imagen_url": IMG_COIL,
+        "marca_fabricante": "Kia",
+        "origen": "Corea del Sur",
+        "material": "Plástico reforzado / cobre",
+        "contenido_caja": "1 unidad",
+        "compatibilidad": "Kia Picanto",
     },
     {
         "nombre": "Bobina Toyota 448",
@@ -69,6 +91,11 @@ PRODUCTOS = [
         "precio_venta": 85_000,
         "categoria_slug": "encendido-y-bobinas",
         "imagen_url": IMG_PARTS,
+        "marca_fabricante": "Toyota",
+        "origen": "Japón",
+        "material": "Resina epoxi / plástico técnico",
+        "contenido_caja": "1 unidad",
+        "compatibilidad": "Toyota (ref. 448)",
     },
     {
         "nombre": "Bobina Aveo",
@@ -76,6 +103,11 @@ PRODUCTOS = [
         "precio_venta": 75_000,
         "categoria_slug": "encendido-y-bobinas",
         "imagen_url": IMG_WORKSHOP,
+        "marca_fabricante": "Chevrolet",
+        "origen": "México",
+        "material": "Plástico reforzado / cobre",
+        "contenido_caja": "1 unidad",
+        "compatibilidad": "Chevrolet Aveo",
     },
     {
         "nombre": "Pilas Bosch",
@@ -83,6 +115,11 @@ PRODUCTOS = [
         "precio_venta": 38_000,
         "categoria_slug": "encendido-y-bobinas",
         "imagen_url": IMG_SPARK,
+        "marca_fabricante": "Bosch",
+        "origen": "Alemania",
+        "material": "Cerámica / níquel",
+        "contenido_caja": "4 unidades",
+        "compatibilidad": "Opel Corsa B, Astra F/G, Vectra A/B",
     },
     {
         "nombre": "Pila Spark GT",
@@ -90,6 +127,11 @@ PRODUCTOS = [
         "precio_venta": 50_000,
         "categoria_slug": "encendido-y-bobinas",
         "imagen_url": IMG_SPARK,
+        "marca_fabricante": "NGK",
+        "origen": "Japón",
+        "material": "Cerámica / iridio",
+        "contenido_caja": "1 unidad",
+        "compatibilidad": "Chevrolet Spark GT",
     },
     # Sensores y Electrónica
     {
@@ -98,6 +140,11 @@ PRODUCTOS = [
         "precio_venta": 110_000,
         "categoria_slug": "sensores-y-electronica",
         "imagen_url": IMG_SENSOR,
+        "marca_fabricante": "Bosch",
+        "origen": "Alemania",
+        "material": "Acero inoxidable / cerámica",
+        "contenido_caja": "1 unidad",
+        "compatibilidad": "Fiat Cronos",
     },
     {
         "nombre": "Sensor Oxígeno Koleos",
@@ -105,6 +152,11 @@ PRODUCTOS = [
         "precio_venta": 180_000,
         "categoria_slug": "sensores-y-electronica",
         "imagen_url": IMG_ELECTRONICS,
+        "marca_fabricante": "NTK",
+        "origen": "Japón",
+        "material": "Acero inoxidable / circonio",
+        "contenido_caja": "1 unidad",
+        "compatibilidad": "Renault Koleos",
     },
     {
         "nombre": "Sensor Oxígeno Mazda 2",
@@ -112,6 +164,11 @@ PRODUCTOS = [
         "precio_venta": 200_000,
         "categoria_slug": "sensores-y-electronica",
         "imagen_url": IMG_SENSOR,
+        "marca_fabricante": "Denso",
+        "origen": "Japón",
+        "material": "Acero inoxidable / cerámica",
+        "contenido_caja": "1 unidad",
+        "compatibilidad": "Mazda 2",
     },
     {
         "nombre": "Sensor Oxígeno Nissan Tiida",
@@ -119,6 +176,11 @@ PRODUCTOS = [
         "precio_venta": 200_000,
         "categoria_slug": "sensores-y-electronica",
         "imagen_url": IMG_ELECTRONICS,
+        "marca_fabricante": "Bosch",
+        "origen": "Alemania",
+        "material": "Acero inoxidable / cerámica",
+        "contenido_caja": "1 unidad",
+        "compatibilidad": "Nissan Tiida",
     },
 ]
 
@@ -145,6 +207,11 @@ def _upsert_producto(
     categoria_id: int,
     imagen_url: str,
     stock: int = DEFAULT_STOCK,
+    marca_fabricante: Optional[str] = None,
+    origen: Optional[str] = None,
+    material: Optional[str] = None,
+    contenido_caja: Optional[str] = None,
+    compatibilidad: Optional[str] = None,
 ) -> tuple[Producto, bool]:
     """Inserta o actualiza un producto por nombre. Retorna (producto, creado)."""
     producto = db.query(Producto).filter(Producto.nombre == nombre).first()
@@ -154,6 +221,11 @@ def _upsert_producto(
         producto.categoria_id = categoria_id
         producto.imagen_url = imagen_url
         producto.activo = True
+        producto.marca_fabricante = marca_fabricante
+        producto.origen = origen
+        producto.material = material
+        producto.contenido_caja = contenido_caja
+        producto.compatibilidad = compatibilidad
         # No sobrescribe stock si ya existe (evita borrar inventario real)
         return producto, False
 
@@ -166,6 +238,11 @@ def _upsert_producto(
         imagen_url=imagen_url,
         activo=True,
         categoria_id=categoria_id,
+        marca_fabricante=marca_fabricante,
+        origen=origen,
+        material=material,
+        contenido_caja=contenido_caja,
+        compatibilidad=compatibilidad,
     )
     db.add(producto)
     return producto, True
@@ -195,6 +272,7 @@ def seed(db: Session | None = None) -> dict[str, int]:
 
     try:
         Base.metadata.create_all(bind=engine)
+        ensure_producto_ficha_columns()
 
         admin_creado = _ensure_admin(session)
 
@@ -216,6 +294,11 @@ def seed(db: Session | None = None) -> dict[str, int]:
                 precio_venta=item["precio_venta"],
                 categoria_id=categoria.id,
                 imagen_url=item["imagen_url"],
+                marca_fabricante=item.get("marca_fabricante"),
+                origen=item.get("origen"),
+                material=item.get("material"),
+                contenido_caja=item.get("contenido_caja"),
+                compatibilidad=item.get("compatibilidad"),
             )
             if is_new:
                 creados += 1

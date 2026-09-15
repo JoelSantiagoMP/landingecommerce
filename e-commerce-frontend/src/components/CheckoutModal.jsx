@@ -69,19 +69,22 @@ export default function CheckoutModal() {
     }
   }
 
+  const inputClass =
+    'w-full border border-surface-border bg-surface px-3 py-2.5 text-sm text-white outline-none placeholder:text-ink-soft focus:border-primary focus:ring-2 focus:ring-primary/25'
+
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[60] flex items-end justify-center p-0 sm:items-center sm:p-4">
       <button
         type="button"
-        className="absolute inset-0 bg-slate-900/50 backdrop-blur-[2px]"
+        className="absolute inset-0 bg-black/70 backdrop-blur-[2px] animate-fadeIn"
         aria-label="Cerrar checkout"
         onClick={handleClose}
       />
 
-      <div className="relative w-full max-w-lg border border-slate-200 bg-white shadow-panel">
-        <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+      <div className="relative w-full max-w-lg border border-surface-border bg-surface-raised shadow-panel animate-scaleIn">
+        <div className="flex items-center justify-between border-b border-surface-border px-5 py-4">
           <div>
-            <p className="font-display text-2xl font-bold tracking-wide">
+            <p className="font-display text-2xl font-bold italic tracking-wide text-white">
               {orderUuid ? 'Pedido confirmado' : 'Finalizar compra'}
             </p>
             {!orderUuid && (
@@ -91,7 +94,7 @@ export default function CheckoutModal() {
           <button
             type="button"
             onClick={handleClose}
-            className="inline-flex h-9 w-9 items-center justify-center border border-slate-200 text-ink-soft hover:text-ink"
+            className="inline-flex h-9 w-9 items-center justify-center border border-surface-border text-ink-soft transition hover:border-primary hover:text-white"
             aria-label="Cerrar"
           >
             <X className="h-4 w-4" />
@@ -100,11 +103,11 @@ export default function CheckoutModal() {
 
         {orderUuid ? (
           <div className="space-y-4 px-5 py-8 text-center">
-            <CheckCircle2 className="mx-auto h-14 w-14 text-emerald-600" />
+            <CheckCircle2 className="mx-auto h-14 w-14 text-emerald-400" />
             <p className="text-balance text-ink-soft">
               Recibimos tu pedido. Guarda este código para seguimiento:
             </p>
-            <p className="break-all bg-surface px-4 py-3 font-mono text-sm font-semibold text-primary">
+            <p className="break-all border border-surface-border bg-surface px-4 py-3 font-mono text-sm font-semibold text-primary">
               {orderUuid}
             </p>
             <button
@@ -118,45 +121,45 @@ export default function CheckoutModal() {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4 px-5 py-5">
             <label className="block space-y-1.5">
-              <span className="text-sm font-semibold text-ink">Nombre completo</span>
+              <span className="text-sm font-semibold text-white">Nombre completo</span>
               <input
                 required
                 name="cliente_nombre"
                 value={form.cliente_nombre}
                 onChange={handleChange}
-                className="w-full border border-slate-200 bg-surface px-3 py-2.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                className={inputClass}
                 placeholder="Ej. Carlos Méndez"
               />
             </label>
 
             <label className="block space-y-1.5">
-              <span className="text-sm font-semibold text-ink">Correo electrónico</span>
+              <span className="text-sm font-semibold text-white">Correo electrónico</span>
               <input
                 required
                 type="email"
                 name="cliente_email"
                 value={form.cliente_email}
                 onChange={handleChange}
-                className="w-full border border-slate-200 bg-surface px-3 py-2.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                className={inputClass}
                 placeholder="tu@correo.com"
               />
             </label>
 
             <label className="block space-y-1.5">
-              <span className="text-sm font-semibold text-ink">Teléfono / WhatsApp</span>
+              <span className="text-sm font-semibold text-white">Teléfono / WhatsApp</span>
               <input
                 required
                 name="cliente_telefono"
                 value={form.cliente_telefono}
                 onChange={handleChange}
                 minLength={5}
-                className="w-full border border-slate-200 bg-surface px-3 py-2.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                className={inputClass}
                 placeholder="+57 300 123 4567"
               />
             </label>
 
             {error && (
-              <p className="border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+              <p className="border border-primary/40 bg-primary/10 px-3 py-2 text-sm text-primary">
                 {error}
               </p>
             )}
@@ -164,7 +167,7 @@ export default function CheckoutModal() {
             <button
               type="submit"
               disabled={submitting || items.length === 0}
-              className="inline-flex w-full items-center justify-center gap-2 bg-primary py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:bg-slate-300"
+              className="inline-flex w-full items-center justify-center gap-2 bg-primary py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:bg-surface-border disabled:text-ink-soft"
             >
               {submitting ? (
                 <>

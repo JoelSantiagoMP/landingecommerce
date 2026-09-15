@@ -5,13 +5,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1.router import api_router
 from app.core.config import settings
-from app.core.database import Base, engine
+from app.core.database import Base, engine, ensure_producto_ficha_columns
 from app.models import Categoria, Orden, OrdenItem, Producto, Usuario  # noqa: F401
 
 
 def init_db() -> None:
-    """Crea las tablas si aún no existen."""
+    """Crea las tablas si aún no existen y aplica columnas nuevas."""
     Base.metadata.create_all(bind=engine)
+    ensure_producto_ficha_columns()
 
 
 @asynccontextmanager

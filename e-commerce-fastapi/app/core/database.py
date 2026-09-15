@@ -1,7 +1,7 @@
 from collections.abc import Generator
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 from app.core.config import settings
@@ -72,6 +72,34 @@ class Base(DeclarativeBase):
     """Clase base para todos los modelos SQLAlchemy."""
 
     pass
+
+
+# Columnas de ficha técnica añadidas tras el esquema inicial (create_all no las crea).
+_PRODUCTO_FICHA_COLUMNS: dict[str, str] = {
+    "marca_fabricante": "VARCHAR(100)",
+    "origen": "VARCHAR(100)",
+    "material": "VARCHAR(200)",
+    "contenido_caja": "VARCHAR(100)",
+    "compatibilidad": "TEXT",
+}
+
+
+def ensure_producto_ficha_columns() -> None:
+    """Agrega columnas de ficha técnica a productos si faltan (SQLite/Postgres)."""
+    inspector = inspect(engine)
+    if "productos" not in inspector.get_table_names():
+        return
+
+    existing = {col["name"] for col in inspector.get_columns("productos")}
+    missing = {
+        name: ddl for name, ddl in _PRODUCTO_FICHA_COLUMNS.items() if name not in existing
+    }
+    if not missing:
+        return
+
+    with engine.begin() as conn:
+        for name, ddl in missing.items():
+            conn.execute(text(f"ALTER TABLE productos ADD COLUMN {name} {ddl}"))
 
 
 def get_db() -> Generator[Session, None, None]:

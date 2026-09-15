@@ -12,6 +12,12 @@ class ProductoBase(BaseModel):
     imagen_url: str = ""
     activo: bool = True
     categoria_id: int
+    # Ficha técnica (repuestos)
+    marca_fabricante: Optional[str] = Field(None, max_length=100)
+    origen: Optional[str] = Field(None, max_length=100)
+    material: Optional[str] = Field(None, max_length=200)
+    contenido_caja: Optional[str] = Field(None, max_length=100)
+    compatibilidad: Optional[str] = None
 
 
 class ProductoCreate(ProductoBase):
@@ -27,6 +33,11 @@ class ProductoUpdate(BaseModel):
     imagen_url: Optional[str] = None
     activo: Optional[bool] = None
     categoria_id: Optional[int] = None
+    marca_fabricante: Optional[str] = Field(None, max_length=100)
+    origen: Optional[str] = Field(None, max_length=100)
+    material: Optional[str] = Field(None, max_length=200)
+    contenido_caja: Optional[str] = Field(None, max_length=100)
+    compatibilidad: Optional[str] = None
 
 
 class ProductoRead(ProductoBase):

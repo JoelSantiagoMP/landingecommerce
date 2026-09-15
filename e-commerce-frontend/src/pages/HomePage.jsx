@@ -7,7 +7,7 @@ import CheckoutModal from '../components/CheckoutModal'
 import Navbar from '../components/Navbar'
 import ProductGrid from '../components/ProductGrid'
 
-export default function App() {
+export default function HomePage() {
   const [categorias, setCategorias] = useState([])
   const [productos, setProductos] = useState([])
   const [categoriaActiva, setCategoriaActiva] = useState(null)
@@ -55,7 +55,9 @@ export default function App() {
       const matchSearch =
         !q ||
         p.nombre?.toLowerCase().includes(q) ||
-        p.descripcion?.toLowerCase().includes(q)
+        p.descripcion?.toLowerCase().includes(q) ||
+        p.marca_fabricante?.toLowerCase().includes(q) ||
+        p.compatibilidad?.toLowerCase().includes(q)
       return matchCat && matchSearch
     })
   }, [productos, categoriaActiva, search])
@@ -73,24 +75,28 @@ export default function App() {
         onSearchChange={setSearch}
       />
 
-      <section className="relative min-h-[72vh] overflow-hidden bg-surface-dark text-white">
+      <section className="relative min-h-[78vh] overflow-hidden bg-black text-white">
         <img
-          src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=2000&q=80"
-          alt="Taller mecánico con repuestos y herramientas"
-          className="absolute inset-0 h-full w-full object-cover"
+          src="/brand-casa-wod.jpg"
+          alt="CASA WOD — Repuestos y autopartes"
+          className="absolute inset-0 h-full w-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/70 to-slate-900/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-black/25" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/40" />
 
-        <div className="relative mx-auto flex min-h-[72vh] max-w-7xl flex-col justify-end px-4 pb-14 pt-28 sm:px-6 lg:px-8">
-          <p className="font-display text-5xl font-extrabold tracking-[0.08em] sm:text-7xl">
-            TORQUE
+        <div className="relative mx-auto flex min-h-[78vh] max-w-7xl flex-col justify-end px-4 pb-12 pt-24 sm:px-6 sm:pb-16 lg:px-8">
+          <p className="font-display text-5xl font-extrabold italic leading-none tracking-[0.04em] sm:text-7xl lg:text-8xl">
+            CASA <span className="text-primary">WOD</span>
           </p>
-          <h1 className="mt-3 max-w-xl font-display text-3xl font-bold leading-none tracking-wide sm:text-5xl">
-            Repuestos listos para despacho
+          <p className="mt-2 text-sm font-semibold uppercase tracking-[0.22em] text-ink-soft sm:text-base">
+            Repuestos & Autopartes
+          </p>
+          <h1 className="mt-5 max-w-lg font-display text-2xl font-bold leading-tight tracking-wide text-white sm:text-4xl">
+            Calidad que mueve tu motor
           </h1>
-          <p className="mt-4 max-w-md text-base text-slate-200 sm:text-lg">
-            Catálogo directo al taller: filtra por categoría, agrega al carrito y
-            confirma tu pedido en minutos.
+          <p className="mt-3 max-w-md text-sm text-ink-soft sm:text-base">
+            Bobinas, sensores y combustible con ficha técnica clara: marca, origen y
+            compatibilidad de vehículos.
           </p>
           <a
             href="#catalogo"
@@ -105,7 +111,7 @@ export default function App() {
       <main id="catalogo" className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 className="font-display text-3xl font-bold tracking-wide text-ink sm:text-4xl">
+            <h2 className="font-display text-3xl font-bold italic tracking-wide text-white sm:text-4xl">
               {categoriaNombre}
             </h2>
             <p className="mt-1 text-sm text-ink-soft">
@@ -123,12 +129,15 @@ export default function App() {
         />
       </main>
 
-      <footer className="border-t border-slate-200/80 bg-white/70">
-        <div className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-6 text-sm text-ink-soft sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <span className="font-display text-lg font-bold tracking-wide text-ink">
-            TORQUE Repuestos
+      <footer className="border-t border-surface-border bg-surface-raised/60">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-6 text-sm text-ink-soft sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <span className="font-display text-lg font-bold italic tracking-wide text-white">
+            CASA <span className="text-primary">WOD</span>
+            <span className="ml-2 text-xs font-sans font-semibold uppercase tracking-wider text-ink-soft">
+              Repuestos & Autopartes
+            </span>
           </span>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             <span>Venta directa · Envíos a todo el país</span>
             <Link to="/admin" className="font-semibold text-primary hover:text-primary-hover">
               Admin

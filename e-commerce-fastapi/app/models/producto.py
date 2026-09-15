@@ -20,6 +20,12 @@ class Producto(Base):
     stock: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     imagen_url: Mapped[str] = mapped_column(String(500), nullable=False, default="")
     activo: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    # Ficha técnica (repuestos)
+    marca_fabricante: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    origen: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    material: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
+    contenido_caja: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    compatibilidad: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     categoria_id: Mapped[int] = mapped_column(
         Integer,
         ForeignKey("categorias.id", ondelete="CASCADE"),

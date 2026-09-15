@@ -5,17 +5,18 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#1E40AF',
-          hover: '#1D4ED8',
+          DEFAULT: '#E50914',
+          hover: '#B91C1C',
         },
         surface: {
-          DEFAULT: '#F3F5F8',
-          muted: '#E6EBF2',
-          dark: '#0F172A',
+          DEFAULT: '#0D0D0D',
+          raised: '#1A1A1A',
+          muted: '#121212',
+          border: '#2A2A2A',
         },
         ink: {
-          DEFAULT: '#0B1220',
-          soft: '#475569',
+          DEFAULT: '#FFFFFF',
+          soft: '#9CA3AF',
         },
       },
       fontFamily: {
@@ -23,7 +24,27 @@ export default {
         sans: ['"Source Sans 3"', 'sans-serif'],
       },
       boxShadow: {
-        panel: '0 18px 40px rgba(15, 23, 42, 0.16)',
+        panel: '0 24px 48px rgba(0, 0, 0, 0.55)',
+        glow: '0 0 0 1px rgba(229, 9, 20, 0.35), 0 12px 32px rgba(229, 9, 20, 0.18)',
+      },
+      keyframes: {
+        fadeIn: {
+          from: { opacity: '0' },
+          to: { opacity: '1' },
+        },
+        scaleIn: {
+          from: { opacity: '0', transform: 'scale(0.96) translateY(8px)' },
+          to: { opacity: '1', transform: 'scale(1) translateY(0)' },
+        },
+        slideIn: {
+          from: { transform: 'translateX(100%)' },
+          to: { transform: 'translateX(0)' },
+        },
+      },
+      animation: {
+        fadeIn: 'fadeIn 0.2s ease-out',
+        scaleIn: 'scaleIn 0.25s ease-out',
+        slideIn: 'slideIn 0.25s ease-out',
       },
     },
   },
