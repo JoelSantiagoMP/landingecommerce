@@ -31,9 +31,12 @@ export default function HomePage() {
         setProductos(prodsRes.data ?? [])
       } catch (err) {
         if (cancelled) return
+        const isNetwork =
+          err?.code === 'ERR_NETWORK' ||
+          err?.message?.toLowerCase?.().includes('network')
         setError(
-          err?.message?.includes('Network')
-            ? 'No hay conexión con la API. ¿Está corriendo en :8000?'
+          isNetwork
+            ? 'No hay conexión con la API. En Vercel debes configurar VITE_API_URL con la URL de Render (…/api/v1) y volver a desplegar.'
             : 'Error al cargar el catálogo.',
         )
       } finally {

@@ -26,7 +26,8 @@ services:
         value: E-Commerce API
       - key: API_V1_PREFIX
         value: /api/v1
-      # Orígenes CORS del frontend (Vite local + dominio de producción)
+      # Orígenes CORS: incluye Vite local + dominios Vercel.
+      # Ejemplo: http://localhost:5173,https://landingecommerce.vercel.app,*
       - key: CORS_ORIGINS
         sync: false
 

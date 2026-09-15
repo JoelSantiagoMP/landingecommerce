@@ -6,12 +6,34 @@ export const getStoredToken = () => localStorage.getItem(TOKEN_KEY)
 export const setStoredToken = (token) => localStorage.setItem(TOKEN_KEY, token)
 export const clearStoredToken = () => localStorage.removeItem(TOKEN_KEY)
 
+/**
+ * Base URL de la API.
+ * - Dev: usa el proxy de Vite (`/api` → localhost:8000) si no hay VITE_API_URL.
+ * - Prod (Vercel): requiere VITE_API_URL, p. ej. https://TU-SERVICIO.onrender.com/api/v1
+ */
+function resolveApiBaseUrl() {
+  const fromEnv = import.meta.env.VITE_API_URL?.trim()
+  if (fromEnv) {
+    return fromEnv.replace(/\/$/, '')
+  }
+  if (import.meta.env.DEV) {
+    return '/api/v1'
+  }
+  console.error(
+    '[CASA WOD] Falta VITE_API_URL en el build de producción. ' +
+      'Configúrala en Vercel → Settings → Environment Variables.',
+  )
+  return '/api/v1'
+}
+
+export const API_BASE_URL = resolveApiBaseUrl()
+
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api/v1',
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 15000,
+  timeout: 20000,
 })
 
 api.interceptors.request.use((config) => {
