@@ -1,13 +1,15 @@
 """
-Actualiza las URLs de imagen de productos (p. ej. públicas de Supabase Storage).
+Actualiza las URLs de imagen de productos en la BD.
 
-Uso (desde e-commerce-fastapi/):
+Flujo recomendado (Supabase):
+    python -m app.upload_images
+  → sube product_images/ al bucket y escribe las URLs públicas aquí.
+
+Uso solo-BD (URLs ya conocidas), desde e-commerce-fastapi/:
     python -m app.update_images
 
-Edita el diccionario IMAGE_UPDATES abajo:
-  - Clave int  -> busca por producto.id
-  - Clave str  -> busca por producto.nombre (SKU / nombre exacto)
-  - Valor      -> nueva URL pública
+En Render Shell:
+    python -m app.update_images
 """
 
 from __future__ import annotations
@@ -21,25 +23,13 @@ from app.core.database import Base  # noqa: F401
 from app.models import Producto  # noqa: F401
 
 # ---------------------------------------------------------------------------
-# Mapa de actualizaciones: id|nombre -> URL pública de Supabase Storage
-# Reemplaza los placeholders con tus URLs reales antes de ejecutar.
+# Mapa opcional: id|nombre -> URL pública de Supabase.
+# Si usas `python -m app.upload_images`, este dict puede quedar vacío:
+# el uploader escribe las URLs directamente en la BD.
 # ---------------------------------------------------------------------------
 IMAGE_UPDATES: dict[int | str, str] = {
-    # Por ID:
-    # 1: "https://<project>.supabase.co/storage/v1/object/public/repuestos/bobina-beru.jpg",
-    # Por nombre / SKU:
-    "Bobina Beru": "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80",
-    "Bobina Hyundai i10 28010": "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=800&q=80",
-    "Bobina Hyundai i25 New": "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=800&q=80",
-    "Bobina Kia Picanto": "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80",
-    "Bobina Toyota 448": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80",
-    "Bobina Aveo": "https://images.unsplash.com/photo-1625047509165-4bdad6ce1742?auto=format&fit=crop&w=800&q=80",
-    "Pilas Bosch": "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=800&q=80",
-    "Pila Spark GT": "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=800&q=80",
-    "Sensor Oxígeno Cronos": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&q=80",
-    "Sensor Oxígeno Koleos": "https://images.unsplash.com/photo-1517524008699-0baad5b211d9?auto=format&fit=crop&w=800&q=80",
-    "Sensor Oxígeno Mazda 2": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&q=80",
-    "Sensor Oxígeno Nissan Tiida": "https://images.unsplash.com/photo-1517524008699-0baad5b211d9?auto=format&fit=crop&w=800&q=80",
+    # Ejemplo tras subir a Supabase:
+    # "Bobina Toyota 448": "https://xxxx.supabase.co/storage/v1/object/public/repuestos/bobina-toyota-448.jpg",
 }
 
 
@@ -89,7 +79,7 @@ def update_product_images(
             "updated_count": len(updated),
             "updated": updated,
             "missing": missing,
-            "database": str(engine.url).split("@")[-1],  # host/db sin credenciales
+            "database": str(engine.url).split("@")[-1],
         }
     except Exception:
         session.rollback()
@@ -102,7 +92,10 @@ def update_product_images(
 def main() -> None:
     print("Actualizando URLs de imágenes de productos…")
     if not IMAGE_UPDATES:
-        print("IMAGE_UPDATES está vacío. Edita app/update_images.py y vuelve a ejecutar.")
+        print(
+            "IMAGE_UPDATES vacío. Usa `python -m app.upload_images` "
+            "o pega URLs de Supabase aquí."
+        )
         return
 
     result = update_product_images()

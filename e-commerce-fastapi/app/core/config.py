@@ -17,6 +17,11 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
+    # Supabase Storage (imágenes de repuestos). Usa service_role solo en scripts locales / Shell.
+    SUPABASE_URL: str = ""
+    SUPABASE_SERVICE_ROLE_KEY: str = ""
+    SUPABASE_STORAGE_BUCKET: str = "repuestos"
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

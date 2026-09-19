@@ -29,6 +29,13 @@ services:
       # Orígenes CORS: Vite local + dominios Vercel. Ej: http://localhost:5173,https://landingecommerce.vercel.app,*
       - key: CORS_ORIGINS
         sync: false
+      # Supabase Storage (para python -m app.upload_images en Shell)
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_STORAGE_BUCKET
+        value: repuestos
 
 databases:
   - name: torque-db
