@@ -28,8 +28,25 @@ from app.models import Producto  # noqa: F401
 # el uploader escribe las URLs directamente en la BD.
 # ---------------------------------------------------------------------------
 IMAGE_UPDATES: dict[int | str, str] = {
-    # Ejemplo tras subir a Supabase:
-    # "Bobina Toyota 448": "https://xxxx.supabase.co/storage/v1/object/public/repuestos/bobina-toyota-448.jpg",
+    "Bobina Beru": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/bobina-beru.jpg",
+    "Bobina Hyundai i10 28010": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/bobina-hyundai-i10.jpg",
+    "Bobina Hyundai i25 New": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/bobina-hyundai-i25-new.jpg",
+    "Bobina Kia Picanto": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/bobina-kia-picanto.jpg",
+    "Bobina Toyota 448": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/bobina-toyota-448.jpg",
+    "Bobina Toyota 02248": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/bobina-toyota-02248.jpg",
+    "Bobina Toyota 02258": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/bobina-toyota-02258.jpg",
+    "Bobina Aveo": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/bobina-aveo.jpg",
+    "Pila Spark GT": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/pila-spark-gt.jpg",
+    "Pilas Bosch": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/pila-bomba-bosch.jpg",
+    "Captador CKP Renault": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/captador-ckp-renault.jpg",
+    "Resistencia Soplador Renault": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/resistencia-soplador-renault.jpg",
+    "Sensor Presión Aceite Renault": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/sensor-presion-aceite-renault.jpg",
+    "Sensor Oxígeno Atos": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/sensor-oxigeno-atos.jpg",
+    "Sensor Oxígeno Cronos": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/sensor-oxigeno-cronos.jpg",
+    "Sensor Oxígeno Koleos": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/sensor-oxigeno-koleos.jpg",
+    "Sensor Oxígeno Mazda 2": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/sensor-oxigeno-mazda-2.jpg",
+    "Sensor Oxígeno Nissan Tiida": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/sensor-oxigeno-nissan-tiida.jpg",
+    "Sensor Temperatura Renault": "https://qmzvxsxracwdhewjsekd.supabase.co/storage/v1/object/public/repuestos/sensor-temperatura-renault.jpg",
 }
 
 
