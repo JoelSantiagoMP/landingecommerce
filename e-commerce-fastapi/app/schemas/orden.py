@@ -34,6 +34,7 @@ class OrdenEstadoUpdate(BaseModel):
 class OrdenRead(BaseModel):
     id: int
     uuid: str
+    referencia: str | None = None
     cliente_nombre: str
     cliente_email: str
     cliente_telefono: str

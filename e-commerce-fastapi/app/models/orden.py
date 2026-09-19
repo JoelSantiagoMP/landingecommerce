@@ -30,6 +30,12 @@ class Orden(Base):
         nullable=False,
         default=_generate_uuid,
     )
+    referencia: Mapped[str | None] = mapped_column(
+        String(64),
+        unique=True,
+        index=True,
+        nullable=True,
+    )
     cliente_nombre: Mapped[str] = mapped_column(String(150), nullable=False)
     cliente_email: Mapped[str] = mapped_column(String(200), nullable=False)
     cliente_telefono: Mapped[str] = mapped_column(String(30), nullable=False)

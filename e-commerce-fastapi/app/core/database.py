@@ -83,23 +83,48 @@ _PRODUCTO_FICHA_COLUMNS: dict[str, str] = {
     "compatibilidad": "TEXT",
 }
 
+_ORDEN_EXTRA_COLUMNS: dict[str, str] = {
+    "referencia": "VARCHAR(64)",
+}
+
 
 def ensure_producto_ficha_columns() -> None:
     """Agrega columnas de ficha técnica a productos si faltan (SQLite/Postgres)."""
+    _ensure_table_columns("productos", _PRODUCTO_FICHA_COLUMNS)
+
+
+def ensure_orden_extra_columns() -> None:
+    """Agrega columnas nuevas a ordenes si faltan (p. ej. referencia Wompi)."""
+    _ensure_table_columns("ordenes", _ORDEN_EXTRA_COLUMNS)
+
+
+def _ensure_table_columns(table_name: str, columns: dict[str, str]) -> None:
     inspector = inspect(engine)
-    if "productos" not in inspector.get_table_names():
+    if table_name not in inspector.get_table_names():
         return
 
-    existing = {col["name"] for col in inspector.get_columns("productos")}
-    missing = {
-        name: ddl for name, ddl in _PRODUCTO_FICHA_COLUMNS.items() if name not in existing
-    }
+    existing = {col["name"] for col in inspector.get_columns(table_name)}
+    missing = {name: ddl for name, ddl in columns.items() if name not in existing}
     if not missing:
         return
 
     with engine.begin() as conn:
         for name, ddl in missing.items():
-            conn.execute(text(f"ALTER TABLE productos ADD COLUMN {name} {ddl}"))
+            conn.execute(text(f"ALTER TABLE {table_name} ADD COLUMN {name} {ddl}"))
+
+    # Índice único de referencia (idempotente a nivel práctico).
+    if table_name == "ordenes" and "referencia" in missing:
+        with engine.begin() as conn:
+            try:
+                conn.execute(
+                    text(
+                        "CREATE UNIQUE INDEX IF NOT EXISTS ix_ordenes_referencia "
+                        "ON ordenes (referencia)"
+                    )
+                )
+            except Exception:
+                # Postgres antiguo / motores sin IF NOT EXISTS en índices: ignorar.
+                pass
 
 
 def get_db() -> Generator[Session, None, None]:

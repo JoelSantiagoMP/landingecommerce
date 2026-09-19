@@ -130,7 +130,7 @@ export default function CartDrawer() {
             onClick={openCheckout}
             className="w-full bg-primary py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:bg-surface-border disabled:text-ink-soft"
           >
-            Ir al checkout
+            Proceder al pago
           </button>
         </div>
       </aside>

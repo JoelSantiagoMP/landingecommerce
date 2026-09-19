@@ -6,6 +6,7 @@ from app.schemas.orden import (
     OrdenItemRead,
     OrdenRead,
 )
+from app.schemas.pago import CheckoutItemRequest, CrearTransaccionResponse
 from app.schemas.producto import ProductoCreate, ProductoRead, ProductoUpdate
 
 __all__ = [
@@ -20,4 +21,6 @@ __all__ = [
     "OrdenItemCreate",
     "OrdenItemRead",
     "OrdenRead",
+    "CheckoutItemRequest",
+    "CrearTransaccionResponse",
 ]

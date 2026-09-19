@@ -22,6 +22,12 @@ class Settings(BaseSettings):
     SUPABASE_SERVICE_ROLE_KEY: str = ""
     SUPABASE_STORAGE_BUCKET: str = "repuestos"
 
+    # Wompi (Sandbox / Producción). Nunca exponer PRIVATE_KEY ni secrets al frontend.
+    WOMPI_PUBLIC_KEY: str = ""
+    WOMPI_PRIVATE_KEY: str = ""
+    WOMPI_EVENTS_SECRET: str = ""
+    WOMPI_INTEGRITY_SECRET: str = ""
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

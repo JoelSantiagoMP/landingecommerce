@@ -55,6 +55,10 @@ export const getOrdenes = (params = {}) => api.get('/checkout/', { params })
 export const updateOrdenEstado = (uuid, estado) =>
   api.patch(`/checkout/${uuid}/estado`, { estado })
 
+/** Crea transacción Wompi. Body: [{ producto_id, cantidad }, ...] */
+export const crearTransaccionWompi = (items) =>
+  api.post('/pagos/crear-transaccion', items)
+
 export const loginAdmin = (email, password) => {
   const body = new URLSearchParams()
   body.append('username', email)

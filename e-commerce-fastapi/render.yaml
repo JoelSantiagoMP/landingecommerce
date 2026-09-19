@@ -36,6 +36,15 @@ services:
         sync: false
       - key: SUPABASE_STORAGE_BUCKET
         value: repuestos
+      # Wompi Sandbox (Dashboard → Desarrolladores → Llaves y secretos)
+      - key: WOMPI_PUBLIC_KEY
+        sync: false
+      - key: WOMPI_PRIVATE_KEY
+        sync: false
+      - key: WOMPI_EVENTS_SECRET
+        sync: false
+      - key: WOMPI_INTEGRITY_SECRET
+        sync: false
 
 databases:
   - name: torque-db
